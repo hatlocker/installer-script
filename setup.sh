@@ -13,7 +13,7 @@ vgchange -an datavg
 cryptsetup luksClose data
 
 
-version="2"
+version="3"
 urlroot="http://172.16.0.100/"
 
 mkdir /mnt/ESP
