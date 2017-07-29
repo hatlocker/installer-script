@@ -1,25 +1,19 @@
-parted /dev/vda -s -- \
-	mklabel gpt \
-	mkpart ESP fat32 1MiB 1GiB \
-	set 1 boot on \
-	mkpart OSA fat32 1GiB 11GiB \
-	mkpart OSB fat32 11GiB 21GiB \
-	mkpart DATA ext4 21GiB -1
-
 mkfs.fat -F32 /dev/vda1
 
 echo provision123 | cryptsetup luksFormat -q /dev/vda4
 echo provision123 | cryptsetup luksOpen -q /dev/vda4 data
 pvcreate /dev/mapper/data
 vgcreate datavg /dev/mapper/data
-lvcreate -l 100%VG -n datavol datavg
+lvcreate -L 1GB -n etcvol datavg
+lvcreate -l 100%FREE -n datavol datavg
+mkfs.ext4 /dev/mapper/datavg-etcvol
 mkfs.xfs /dev/mapper/datavg-datavol
 lvchange -an /dev/datavg/datavol
 vgchange -an datavg
 cryptsetup luksClose data
 
 
-version="201707252054"
+version="2"
 urlroot="http://172.16.0.100/"
 
 mkdir /mnt/ESP
