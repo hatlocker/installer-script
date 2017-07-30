@@ -12,6 +12,7 @@ lvchange -an /dev/datavg/datavol
 vgchange -an datavg
 cryptsetup luksClose data
 
+tune2fs /dev/vda4 -U ca9ea0ec-7514-11e7-a171-e4a4714acfe5
 
 version="3"
 urlroot="http://172.16.0.100/"
