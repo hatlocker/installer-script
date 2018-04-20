@@ -48,7 +48,14 @@ mkfs.ext4 /dev/mapper/hldatavg-etcvol
 mkfs.xfs /dev/mapper/hldatavg-datavol
 dmsetup remove hldatavg-etcvol
 dmsetup remove hldatavg-datavol
-dmsetup remove hldata
+cryptsetup luksClose hldata
+# For some reason, we need to close it twice, or my kernel won't clean up the PV....
+echo provision123 | cryptsetup luksOpen -q /dev/${disk}4 hldata
+sleep 1
+dmsetup remove hldatavg-etcvol
+dmsetup remove hldatavg-datavol
+cryptsetup luksClose hldata
+
 
 mkdir /mnt/ESP
 mount /dev/${disk}1 /mnt/ESP
@@ -74,5 +81,3 @@ else
 fi
 
 curl $urlroot/$version.gz | gzip --decompress | dd of=/dev/${disk}2
-
-# TODO: Setup mokutil for key import
