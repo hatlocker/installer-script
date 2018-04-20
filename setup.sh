@@ -1,6 +1,11 @@
-disk="vda"
-version="3"
-urlroot="http://172.16.0.100/"
+disk="$1"
+if [ ! -b /dev/$disk ];
+then
+	echo "$disk seems to be an incorrect target"
+	exit 1
+fi
+version="$2"
+urlroot="$3"
 
 mkfs.fat -F32 /dev/${disk}1
 

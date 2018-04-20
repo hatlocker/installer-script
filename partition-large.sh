@@ -1,4 +1,11 @@
-parted /dev/vda -s -- \
+disk="$1"
+if [ ! -b /dev/$disk ];
+then
+	echo "$disk seems to be an incorrect target"
+	exit 1
+fi
+
+parted /dev/$disk -s -- \
 	mklabel gpt \
 	mkpart ESP fat32 1MiB 2GiB \
 	set 1 boot on \
