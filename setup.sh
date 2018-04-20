@@ -1,3 +1,8 @@
+if [ $# -lt 3 ];
+then
+	echo "Usage: $0 <disk> <version> <urlroot>"
+	exit 1
+fi
 disk="$1"
 if [ ! -b /dev/$disk ];
 then
