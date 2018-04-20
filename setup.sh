@@ -4,7 +4,7 @@ then
 	exit 1
 fi
 disk="$1"
-if [ ! -b /dev/$disk ];
+if [ ! -b /dev/${disk}1 ];
 then
 	echo "$disk seems to be an incorrect target"
 	exit 1
