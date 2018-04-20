@@ -57,8 +57,8 @@ curl $urlroot/$version.efi | dd of=/mnt/ESP/OSB.EFI
 if [ "$do_efi_boot" == "y" ];
 then
 	echo "Installing /mnt/ESP/BOOT/BOOTX64.efi"
-	mkdir -p /mnt/ESP/BOOT
-	cp /mnt/ESP/OSA.EFI /mnt/ESP/BOOT/BOOTX64.EFI
+	mkdir -p /mnt/ESP/EFI/BOOT
+	cp /mnt/ESP/OSA.EFI /mnt/ESP/EFI/BOOT/BOOTX64.EFI
 fi
 umount /mnt/ESP
 rmdir /mnt/ESP
