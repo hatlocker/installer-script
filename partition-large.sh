@@ -5,6 +5,15 @@ then
 	exit 1
 fi
 
+if [ "`fdisk -l /dev/$disk | grep Device`" != "" ];
+then
+	if [ "$2" != "-f" ];
+	then
+		echo "$disk seems to contain partitions. Use -f to overwrite"
+		exit 1
+	fi
+fi
+
 parted /dev/$disk -s -- \
 	mklabel gpt \
 	mkpart ESP fat32 1MiB 2GiB \
