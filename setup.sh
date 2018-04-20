@@ -1,14 +1,27 @@
-if [ $# -lt 3 -o $# -gt 4 ];
+#!/bin/bash
+set -xe
+if [ $# -lt 3 -o $# -gt 5 ];
 then
-	echo "Usage: $0 <disk> <version> <urlroot> [--skip-efi]"
+	echo "Usage: $0 <disk> <version> <urlroot> [--skip-efi [--efi-boot]]"
 	exit 1
 fi
 do_efi="y"
-if [ $# == 4 ];
+do_efi_boot="n"
+if [ $# -ge 4 ];
 then
 	if [ "$4" == "--skip-efi" ];
 	then
 		do_efi="n"
+		if [ $# -ge 5 ];
+		then
+			if [ "$5" == "--efi-boot" ];
+			then
+				do_efi_boot="y"
+			else
+				echo "Usage: $0 <disk> <version> <urlroot> [--skip-efi]"
+				exit 1
+			fi
+		fi
 	else
 		echo "Usage: $0 <disk> <version> <urlroot> [--skip-efi]"
 		exit 1
@@ -41,6 +54,12 @@ mkdir /mnt/ESP
 mount /dev/${disk}1 /mnt/ESP
 curl $urlroot/$version.efi | dd of=/mnt/ESP/OSA.EFI
 curl $urlroot/$version.efi | dd of=/mnt/ESP/OSB.EFI
+if [ "$do_efi_boot=" == "y" ];
+then
+	echo "Installing /mnt/ESP/BOOT/BOOTX64.efi"
+	mkdir -p /mnt/ESP/BOOT
+	cp /mnt/ESP/OSA.EFI /mnt/ESP/BOOT/BOOTX64.EFI
+fi
 umount /mnt/ESP
 rmdir /mnt/ESP
 
