@@ -54,7 +54,7 @@ mkdir /mnt/ESP
 mount /dev/${disk}1 /mnt/ESP
 curl $urlroot/$version.efi | dd of=/mnt/ESP/OSA.EFI
 curl $urlroot/$version.efi | dd of=/mnt/ESP/OSB.EFI
-if [ "$do_efi_boot=" == "y" ];
+if [ "$do_efi_boot" == "y" ];
 then
 	echo "Installing /mnt/ESP/BOOT/BOOTX64.efi"
 	mkdir -p /mnt/ESP/BOOT
